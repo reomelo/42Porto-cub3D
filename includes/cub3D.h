@@ -12,7 +12,7 @@
 # include "../mlx/mlx.h"
 # include <math.h>
 
-# define FOV 60
+# define FOV 180
 # define FLOOR_COLOR 0x00808080
 # define CEILING_COLOR 0x005A5A5A
 # define MAX 1e30
@@ -22,7 +22,11 @@
 # define SCREEN_HEIGHT 1080
 # define SQUARE_SIZE 16
 
-
+# define ESC 65307
+# define W 119
+# define A 97
+# define S 115
+# define D 100
 
 typedef struct s_tinfo
 {
@@ -121,11 +125,13 @@ void ft_create_map_images(t_mlx *mlx, t_map *map);
 void ft_render_map_background(t_root *root);
 bool is_player(char c);
 void ft_cast_rays(t_root *root);
-void ft_init_rays(t_root *root, t_player *player, int i);
 void ft_dda_algorithm(t_root *root, t_ray *ray, t_map *map);
 void ft_set_step_and_side_dist(t_ray *ray, t_player *player, t_map *map);
 void ft_set_ray_length(t_ray *ray);
 void ft_draw(t_ray *ray, t_mlx *mlx, int i);
 bool ft_is_player(char c);
-bool ft_init_player(int x, int y, t_player *player);
+bool ft_init_player(char c, int x, int y, t_player *player);
+void ft_init_rays(t_root *root, t_player *player, int i);
+void hooks(t_root *root);
+
 #endif

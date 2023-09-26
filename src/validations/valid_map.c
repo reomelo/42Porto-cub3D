@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpicoli- <lpicoli-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 16:57:13 by lpicoli-          #+#    #+#             */
-/*   Updated: 2023/09/22 17:09:45 by lpicoli-         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:41:29 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool ft_is_closed_map(t_map *map, t_player *player)
 		{
 			if(ft_is_player(map->map_arr[i][j]))
             {
-                if (!ft_check_all_sides(map, i, j) || !ft_init_player(j, i, player))
+                if (!ft_check_all_sides(map, i, j) || !ft_init_player(map->map_arr[i][j], j, i, player))
                     return (false);
             }
 			j++;
@@ -112,15 +112,38 @@ void ft_create_map_arr(t_map *map)
 	free(line);
 }
 
-bool ft_init_player(int x, int y, t_player *player)
+void ft_init_player_direction(char c, t_player *player)
 {
-	static int n_player;
-
-	if (++n_player > 1)
-		return (false);
-	player->x = x;
-	player->y = y;
-	return (true);
+    if(c == 'N' || c == 'S')
+    {
+        player->plane_x = 0.66;
+        player->plane_y = 0;
+        player->dir_x = 0;
+        if(c == 'N')
+            player->dir_y = -1;
+        else
+            player->dir_y = 1;
+    }
+    else
+    {
+        player->plane_x = 0;
+        player->plane_y = 0.66;
+        player->dir_y = 0;
+        if(c == 'W')
+            player->dir_x = -1;
+        else
+            player->dir_x = 1;
+    }
+}
+bool ft_init_player(char c, int x, int y, t_player *player)
+{
+    static int n_player;
+    if (++n_player > 1)
+        return (false);
+    player->x = (float)x + 0.5;
+    player->y = (float)y + 0.5;
+    ft_init_player_direction(c, player);
+    return (true);
 }
 
 bool ft_read_map_file(t_map *map)
