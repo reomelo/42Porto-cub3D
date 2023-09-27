@@ -4,7 +4,7 @@ void ft_init_rays(t_root *root, t_player *player, int i)
 {
 	root->map->map_x = (int)player->x;
 	root->map->map_y = (int)player->y;
-	root->camera_x = 2 * i / (float)SCREEN_WIDTH - 1;
+	root->camera_x = 2 * i / (double)SCREEN_WIDTH - 1;
 	root->ray->ray_dir_x  = player->dir_x + player->plane_x * root->camera_x;
 	root->ray->ray_dir_y = player->dir_y + player->plane_y * root->camera_x;
 	root->hit_wall = 0;

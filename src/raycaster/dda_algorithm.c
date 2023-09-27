@@ -48,6 +48,7 @@ void ft_print_dda_info(t_root *root, t_ray *ray)
     printf("--- end ---\n");
 
 }
+
 void ft_dda_algorithm(t_root *root, t_ray *ray, t_map *map)
 {
     char side;
@@ -65,7 +66,7 @@ void ft_dda_algorithm(t_root *root, t_ray *ray, t_map *map)
             map->map_y += ray->step_y;
             side = 1;
         }
-
+        
         if(map->map_arr[map->map_y][map->map_x] == '1')
             root->hit_wall = 1;
     }

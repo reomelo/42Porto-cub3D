@@ -39,9 +39,7 @@ int main(int argc, char **argv)
 		return (ft_panic(root));
 	if(!ft_initial_validation(argv[1], root))
 		return (1);
-    ft_render_map_background(root);
-	ft_cast_rays(root);
-    ft_render_mini_map(root->mlx, root->map);
+    ft_render_map(root);
 	hooks(root);
 	/* ft_print_info(root); */
 }

@@ -12,7 +12,8 @@
 # include "../mlx/mlx.h"
 # include <math.h>
 
-# define FOV 180
+# define FOV 0.66
+# define SPEED 0.1
 # define FLOOR_COLOR 0x00808080
 # define CEILING_COLOR 0x005A5A5A
 # define MAX 1e30
@@ -27,6 +28,8 @@
 # define A 97
 # define S 115
 # define D 100
+# define LEFT 65361
+# define RIGHT 65363
 
 typedef struct s_tinfo
 {
@@ -119,10 +122,10 @@ bool ft_initial_validation(char *str, t_root *root);
 bool ft_verify_identifiers(char *str, t_root *root);
 bool ft_add_map_file(char *line);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void ft_render_mini_map(t_mlx *mlx, t_map *map);
-t_data ft_create_square_img(t_mlx *mlx, int color);
+void ft_render_mini_map(t_mlx *mlx, t_map *map, t_player *player);
+t_data ft_create_square_img(t_mlx *mlx, int color, int size);
 void ft_create_map_images(t_mlx *mlx, t_map *map);
-void ft_render_map_background(t_root *root);
+void ft_render_map(t_root *root);
 bool is_player(char c);
 void ft_cast_rays(t_root *root);
 void ft_dda_algorithm(t_root *root, t_ray *ray, t_map *map);
@@ -133,5 +136,7 @@ bool ft_is_player(char c);
 bool ft_init_player(char c, int x, int y, t_player *player);
 void ft_init_rays(t_root *root, t_player *player, int i);
 void hooks(t_root *root);
+bool is_moving(int key_code);
+bool is_rotating(int key_code);
 
 #endif
