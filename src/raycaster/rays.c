@@ -7,6 +7,8 @@ void ft_init_ray(t_root *root, t_player *player, int i)
 	root->camera_x = 2 * i / (double)SCREEN_WIDTH - 1;
 	root->rays->ray_dir_x  = player->dir_x + player->plane_x * root->camera_x;
 	root->rays->ray_dir_y = player->dir_y + player->plane_y * root->camera_x;
+	root->rays->line_height = -1;
+    root->hit_wall = 0;
 }
 
 t_ray	*last_ray(t_ray *lst)
@@ -75,8 +77,8 @@ void ft_cast_rays(t_root *root)
 		ft_init_ray(root, root->player, i);
 		ft_set_ray_length(root->rays);
 		ft_set_step_and_side_dist(root->rays, root->player, root->map);
-		ft_dda_algorithm(root->rays, root->map);
-		ft_draw(root->rays, root->mlx, i);
+		ft_dda_algorithm(root, root->rays, root->map);
+		ft_draw(root->rays, root, i);
 		root->rays = root->rays->next;
 	}
 	mlx_put_image_to_window(root->mlx->mlx, root->mlx->win, root->mlx->map.img, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: lpicoli- <lpicoli-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 16:57:00 by lpicoli-          #+#    #+#             */
-/*   Updated: 2023/09/23 12:25:19 by lpicoli-         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:26:26 by lpicoli-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ bool ft_is_valid_extension(char *str, char *extension)
 		return (true);
 	return (false);
 }
+
 bool ft_istinfo_complete(t_tinfo *tinfo)
 {
-	//falta verificar floor e ceiling
-	if(!tinfo->north || !tinfo->south || !tinfo->west || !tinfo->east) 
+	if(!tinfo->north.addr || !tinfo->south.addr || !tinfo->west.addr || !tinfo->east.addr || tinfo->ceil[0] == -1 || tinfo->floor[0] == -1)
 		return (false);
 	return (true);
 }
@@ -47,26 +47,28 @@ bool ft_is_valid_file(char *str, t_root *root)
 	if(open(MAP, O_RDWR) != -1)
 		open(MAP, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
 	if(fd == -1)
-		return (false);
+        return (false);
 	line = NULL;
 	while((line = get_next_line(fd)))
 	{
 		tmp = ft_get_trimmed_line(line);
-		if((ft_isdigit(tmp[0]) || tmp[0] == ' ' ) && ft_str_is_map_type(line))
+		if((ft_isdigit(tmp[0]) || tmp[0] == ' ') && ft_str_is_map_type(line))
 		{
 			if(!ft_istinfo_complete(root->tinfo))
 			{
 				free(tmp);
 				free(line);
+				root->error_msg = root->errors->tinfo_is_not_complete;
 				return (false);
 			}
 			copy_map = 1;
 			ft_add_map_file(line);
 		}
-		else if(copy_map == 1 || (ft_strcmp(tmp, "\n") && !ft_verify_identifiers(tmp, root)))
+		else if((copy_map == 1 || ft_strcmp(tmp, "\n")) && !ft_verify_identifiers(tmp, root))
 		{
 			free(line);
 			free(tmp);
+			root->error_msg = root->errors->not_valid_texture_or_color;
 			return (false);
 		}
 		free(tmp);
