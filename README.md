@@ -1,6 +1,6 @@
 # Cub3D
 
-![Screenshot from 2023-10-19 18-28-42](https://github.com/reomelo/42Porto-cub3D/assets/73884501/d6bc6f8c-231b-493b-a632-fafcddc05958)
+![Screenshot from 2023-10-19 18-28-42](https://github.com/reomelo/42Porto-cub3D/assets/73884501/c2d5b56f-b79c-4aba-a12f-663244764e1a)
 
 <p align="center">
   <img src="https://github.com/reomelo/42Porto-cub3D/blob/master/cub3d(1).gif" width="600" />
