@@ -3,90 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   valid_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpicoli- <lpicoli-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/16 16:57:00 by lpicoli-          #+#    #+#             */
-/*   Updated: 2023/10/02 12:26:26 by lpicoli-         ###   ########.fr       */
+/*   Created: 2023/10/12 15:57:00 by riolivei          #+#    #+#             */
+/*   Updated: 2023/10/19 17:43:47 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
-	
-bool ft_is_valid_extension(char *str, char *extension)
-{
-    int	ext_len;
-	int	str_len;
-	int	i;
 
-	ext_len = ft_strlen(extension);
-	str_len = ft_strlen(str);
-	i = 0;
-	while (i++ < str_len - ext_len)
-		str++;
-	if (ft_strncmp(str, extension, ext_len) == 0)
-		return (true);
-	return (false);
+void	ft_check_space_or_tabs(t_root *root, char *line)
+{
+	if (line[0] == ' ' || line[0] == '\t')
+		root->error_msg = INVALID_SPACES_OR_TABS;
 }
 
-bool ft_istinfo_complete(t_tinfo *tinfo)
+void	get_textures(t_root *root, char *line, int fd)
 {
-	if(!tinfo->north.addr || !tinfo->south.addr || !tinfo->west.addr || !tinfo->east.addr || tinfo->ceil[0] == -1 || tinfo->floor[0] == -1)
+	char	*tmp;
+	int		copy_map;
+
+	copy_map = 0;
+	while (line)
+	{
+		root->is_empty_file = false;
+		ft_check_space_or_tabs(root, line);
+		tmp = ft_strtrim(line, " ");
+		if ((tmp[0] == '\n' && copy_map == 1) || ((ft_isdigit(tmp[0])
+					|| tmp[0] == ' ') && ft_str_is_map_type(line)))
+		{
+			if (!root->error_msg && !ft_istinfo_complete(root->tinfo))
+				root->error_msg = INCOMPLETE_TEX_OR_COLOR_ERR;
+			copy_map = 1;
+			ft_add_map_file(line);
+		}
+		else if (!root->error_msg && !ft_verify_identifiers(tmp, root) && \
+		ft_strcmp(tmp, "\n"))
+			root->error_msg = INVALID_TEX_OR_COLOR_ERR;
+		free(tmp);
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
+}
+
+bool	ft_is_valid_file(char *str, t_root *root)
+{
+	int		fd;
+	char	*line;
+
+	fd = open(str, O_RDONLY);
+	if (fd < 0)
+		return (false);
+	root->is_empty_file = true;
+	line = get_next_line(fd);
+	get_textures(root, line, fd);
+	close(fd);
+	if (root->is_empty_file || root->error_msg)
 		return (false);
 	return (true);
 }
 
-bool ft_is_valid_file(char *str, t_root *root)
-{
-	int fd;
-	char *line;
-	char *tmp;
-	int copy_map;
-
-	fd = open(str, O_RDONLY);
-	copy_map = 0;
-	if(open(MAP, O_RDWR) != -1)
-		open(MAP, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
-	if(fd == -1)
-        return (false);
-	line = NULL;
-	while((line = get_next_line(fd)))
-	{
-		tmp = ft_get_trimmed_line(line);
-		if((ft_isdigit(tmp[0]) || tmp[0] == ' ') && ft_str_is_map_type(line))
-		{
-			if(!ft_istinfo_complete(root->tinfo))
-			{
-				free(tmp);
-				free(line);
-				root->error_msg = root->errors->tinfo_is_not_complete;
-				return (false);
-			}
-			copy_map = 1;
-			ft_add_map_file(line);
-		}
-		else if((copy_map == 1 || ft_strcmp(tmp, "\n")) && !ft_verify_identifiers(tmp, root))
-		{
-			free(line);
-			free(tmp);
-			root->error_msg = root->errors->not_valid_texture_or_color;
-			return (false);
-		}
-		free(tmp);
-		free(line);
-	}
-	close (fd);
-	free(line);
-	return (true);
-}
-
-//todas as chamadas para error sao dadas aqui, assim evitamos double frees
-bool ft_initial_validation(char *str, t_root *root)
+bool	ft_initial_validation(char *str, t_root *root)
 {
 	if (!ft_is_valid_extension(str, ".cub"))
-		return ft_err("invalid extension", root);
+		return (ft_err(INVALID_EXTENSION, root));
 	if (!ft_is_valid_file(str, root))
-		return ft_err("invalid file", root);
-	if(!ft_is_valid_map(root))
-		return(ft_err("invalid map", root));
+		return (ft_err(INVALID_FILE, root));
+	if (!ft_is_valid_map(root))
+		return (ft_err(INVALID_MAP, root));
 	return (true);
 }
