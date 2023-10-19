@@ -1,13 +1,9 @@
 # Cub3D
 
+![Screenshot from 2023-10-19 18-28-42](https://github.com/reomelo/42Porto-cub3D/assets/73884501/d6bc6f8c-231b-493b-a632-fafcddc05958)
+
 <p align="center">
-  <img src="https://img.shields.io/github/languages/top/reomelo/42Porto-cub3D?color=#FFFFFF&style=flat-square" />
-  <img src="https://img.shields.io/badge/score-103%20%2F%20100-success?color=#FFFFFF&style=flat-square" />
-  <img src="https://img.shields.io/badge/status-finished-success?color=#FFFFFF&style=flat-square" />
-  <img src="https://img.shields.io/github/last-commit/reomelo/42Porto-cub3D?color=#FFFFFF&style=flat-square" />
-</p>
-<p align="center">
-  <img src="https://github.com/reomelo/42Porto-cub3D/blob/main/cub3d(1).gif" width="600" />
+  <img src="https://github.com/reomelo/42Porto-cub3D/blob/master/cub3d(1).gif" width="600" />
 </p>
 
 Welcome to the Cub3D project! Dive into the exciting world of raycasting and maze exploration with our interactive game. Learn about the DDA algorithm and how raycasting works in this creative 3D environment.
@@ -38,7 +34,8 @@ Let's get started on your journey of raycasting and maze exploration. Here's how
   ```
 3. Choose a map from maps folder and give it a try
   ```bash
- ./cub3D maps/valid/subject_map.cub
+  ./cub3D maps/valid/subject_map.cub
+  ```
 
 ## What is DDA?
 DDA stands for Digital Differential Analyzer, a mathematical algorithm used for generating lines, as we do in raycasting. In our context, DDA is the magic behind the scenes, helping us draw rays to create a 3D view of the maze.
